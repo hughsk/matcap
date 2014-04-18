@@ -1,0 +1,59 @@
+{
+  "name": "matcap",
+  "description": "GLSL shaders for calculating/rendering Spherical Environment Maps, or \"matcaps\"",
+  "version": "0.0.0",
+  "main": "index.js",
+  "glslify": "index.glsl",
+  "dependencies": {
+    "glslify": "^1.2.1"
+  },
+  "devDependencies": {
+    "unindex-mesh": "0.0.0",
+    "normals": "^0.1.0",
+    "eye-vector": "0.0.0",
+    "gl-matrix": "^2.1.0",
+    "game-shell-orbit-camera": "0.0.2",
+    "gl-vao": "^1.1.2",
+    "gl-buffer": "^2.0.6",
+    "gl-texture2d": "^1.0.1",
+    "stanford-dragon": "0.0.0",
+    "gl-now": "^1.3.1",
+    "brfs": "git://github.com/hughsk/brfs#readdir",
+    "beefy": "^1.1.0",
+    "browserify": "^3.43.0"
+  },
+  "scripts": {
+    "start": "beefy demo.js:bundle.js -- -t brfs",
+    "prepublish": "browserify demo.js -t brfs -o bundle.js"
+  },
+  "browserify": {
+    "transform": [
+      "glslify"
+    ]
+  },
+  "author": "Hugh Kennedy <hughskennedy@gmail.com> (http://hughsk.io/)",
+  "license": "MIT",
+  "homepage": "http://hughsk.github.io/matcap",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/hughsk/matcap"
+  },
+  "bugs": {
+    "url": "https://github.com/hughsk/matcap/issues"
+  },
+  "keywords": [
+    "matcap",
+    "material",
+    "capture",
+    "spherical",
+    "environment",
+    "reflection",
+    "shader",
+    "glsl",
+    "webgl",
+    "litsphere",
+    "sem",
+    "map",
+    "texture"
+  ]
+}
