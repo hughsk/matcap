@@ -23,8 +23,8 @@ function init (img) {
       uniform vec3 eye;
       varying vec3 n, e;
       void main () {
-        n = mat3(view) * normal;
-        e = -mat3(view) * normalize(eye);
+        n = normal;
+        e = eye;
         gl_Position = projection * view * vec4(position, 1);
       }
     `,
@@ -35,7 +35,8 @@ function init (img) {
       varying vec3 n, e;
       uniform sampler2D texture;
       void main () {
-        vec2 uv = matcap(e, n);
+        mat3 view3 = mat3(view);
+        vec2 uv = matcap(-view3 * normalize(e), view3 * normalize(n));
         gl_FragColor = vec4(texture2D(texture, uv).rgb, 1);
       }
     `),

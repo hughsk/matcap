@@ -20,7 +20,7 @@
     "stanford-dragon": "0.0.0"
   },
   "scripts": {
-    "start": "budo --open --live --host localhost --force-default-index demo.js -- -t es2040 -t brfs -g glslify",
+    "start": "budo --open --live --host localhost demo.js:bundle.js -- -t es2040 -t brfs -g glslify",
     "prepublish": "browserify demo.js -t es2040 -t brfs -g glslify -o bundle.js"
   },
   "browserify": {
