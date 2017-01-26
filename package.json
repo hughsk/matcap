@@ -23,6 +23,11 @@
     "start": "budo --open --live --host localhost --force-default-index demo.js -- -t es2040 -t brfs -g glslify",
     "prepublish": "browserify demo.js -t es2040 -t brfs -g glslify -o bundle.js"
   },
+  "browserify": {
+    "transform": [
+      "glslify"
+    ]
+  },
   "author": "Hugh Kennedy <hughskennedy@gmail.com> (http://hughsk.io/)",
   "license": "MIT",
   "homepage": "http://hughsk.github.io/matcap",
@@ -32,11 +37,6 @@
   },
   "bugs": {
     "url": "https://github.com/hughsk/matcap/issues"
-  },
-  "browserify": {
-    "transform": [
-      "glslify"
-    ]
   },
   "keywords": [
     "matcap",
