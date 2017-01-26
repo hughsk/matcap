@@ -3,7 +3,7 @@ const mesh = require('stanford-dragon/3')
 const textures = fs.readdirSync(__dirname + '/textures')
 const glslify = require('glslify')
 const regl = require('regl')()
-const h = require('h');
+const h = require('h')
 
 const camera = require('regl-camera')(regl, {
   distance: 2,
@@ -12,7 +12,7 @@ const camera = require('regl-camera')(regl, {
 })
 
 
-var texture, drawMesh;
+var texture, drawMesh
 function init (img) {
   texture = regl.texture({data: img, flipY: true})
   drawMesh = regl({
@@ -62,7 +62,7 @@ const textureSelect = document.body.appendChild(h('div', {
     cursor: 'pointer',
     width: '128px'
   }
-}));
+}))
 
 textureSelect.addEventListener('click', function(e) {
   var img = e.target
@@ -75,7 +75,7 @@ for (var i = 0; i < textures.length; i++) (function(src) {
 
   img.onload = function () {
     textureSelect.appendChild(img)
-    if (src === '00001.png') init(img);
+    if (src === '00001.png') init(img)
   }
 
   img.src = 'textures/' + src
