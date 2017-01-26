@@ -5,7 +5,7 @@
   "main": "index.js",
   "glslify": "matcap.glsl",
   "dependencies": {
-    "glslify": "^6.0.1"
+    "glslify": "^1.2.1"
   },
   "devDependencies": {
     "brfs": "git://github.com/hughsk/brfs.git#readdir",
