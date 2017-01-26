@@ -11,7 +11,6 @@ const camera = require('regl-camera')(regl, {
   phi: 0.4
 })
 
-
 var texture, drawMesh
 function init (img) {
   texture = regl.texture({data: img, flipY: true})
@@ -20,11 +19,10 @@ function init (img) {
       precision mediump float;
       attribute vec3 position, normal;
       uniform mat4 projection, view;
-      uniform vec3 eye;
-      varying vec3 n, e;
+      varying vec3 n, p;
       void main () {
         n = normal;
-        e = eye;
+        p = position;
         gl_Position = projection * view * vec4(position, 1);
       }
     `,
@@ -32,11 +30,13 @@ function init (img) {
       precision mediump float;
       #pragma glslify: matcap = require('./matcap.glsl')
       uniform mat4 view;
-      varying vec3 n, e;
+      uniform vec3 eye;
+      varying vec3 n, p;
       uniform sampler2D texture;
       void main () {
-        mat3 view3 = mat3(view);
-        vec2 uv = matcap(-view3 * normalize(e), view3 * normalize(n));
+        vec3 ray = normalize(mat3(view) * (p - eye));
+        vec3 norm = normalize(mat3(view) * n);
+        vec2 uv = matcap(ray, norm);
         gl_FragColor = vec4(texture2D(texture, uv).rgb, 1);
       }
     `),
