@@ -40,6 +40,7 @@ function init (img) {
         gl_FragColor = vec4(texture2D(texture, uv).rgb, 1);
       }
     `),
+    cull: {enable: true, face: 'back'},
     uniforms: {texture: texture},
     attributes: {
       position: require('geom-center-and-normalize')(mesh.positions),

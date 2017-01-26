@@ -18,6 +18,7 @@ function init(img) {
   drawMesh = regl({
     vert: '\n      precision mediump float;\n      attribute vec3 position, normal;\n      uniform mat4 projection, view;\n      varying vec3 n, p;\n      void main () {\n        n = normal;\n        p = position;\n        gl_Position = projection * view * vec4(position, 1);\n      }\n    ',
     frag: glslify(["\n      precision mediump float;\n#define GLSLIFY 1\n#define GLSLIFY 1\n\n      vec2 matcap(vec3 eye, vec3 normal) {\n  vec3 reflected = reflect(eye, normal);\n\n  float m = 2.0 * sqrt(\n    pow(reflected.x, 2.0) +\n    pow(reflected.y, 2.0) +\n    pow(reflected.z + 1.0, 2.0)\n  );\n\n  return reflected.xy / m + 0.5;\n}\n\n      uniform mat4 view;\n      uniform vec3 eye;\n      varying vec3 n, p;\n      uniform sampler2D texture;\n      void main () {\n        vec3 ray = normalize(mat3(view) * (p - eye));\n        vec3 norm = normalize(mat3(view) * n);\n        vec2 uv = matcap(ray, norm);\n        gl_FragColor = vec4(texture2D(texture, uv).rgb, 1);\n      }\n    "]),
+    cull: { enable: true, face: 'back' },
     uniforms: { texture: texture },
     attributes: {
       position: require('geom-center-and-normalize')(mesh.positions),
