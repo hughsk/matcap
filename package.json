@@ -8,23 +8,20 @@
     "glslify": "^1.2.1"
   },
   "devDependencies": {
-    "unindex-mesh": "0.0.0",
-    "normals": "^0.1.0",
-    "eye-vector": "0.0.0",
-    "gl-matrix": "^2.1.0",
-    "game-shell-orbit-camera": "0.0.2",
-    "gl-vao": "^1.1.2",
-    "gl-buffer": "^2.0.6",
-    "gl-texture2d": "^1.0.1",
-    "stanford-dragon": "0.0.0",
-    "gl-now": "^1.3.1",
-    "brfs": "git://github.com/hughsk/brfs#readdir",
-    "beefy": "^1.1.0",
-    "browserify": "^3.43.0"
+    "brfs": "git://github.com/hughsk/brfs.git#readdir",
+    "budo": "^9.4.5",
+    "es2040": "^1.2.4",
+    "geom-center-and-normalize": "^1.0.1",
+    "gl-mat3": "^1.0.0",
+    "h": "^0.1.0",
+    "normals": "^1.1.0",
+    "regl": "^1.3.0",
+    "regl-camera": "git://github.com/rreusser/regl-camera",
+    "stanford-dragon": "0.0.0"
   },
   "scripts": {
-    "start": "beefy demo.js:bundle.js -- -t brfs",
-    "prepublish": "browserify demo.js -t brfs -o bundle.js"
+    "start": "budo --open --live --host localhost demo.js:bundle.js -- -t es2040 -t brfs -g glslify",
+    "prepublish": "browserify demo.js -t es2040 -t brfs -g glslify -o bundle.js"
   },
   "browserify": {
     "transform": [
