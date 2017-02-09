@@ -4,12 +4,22 @@ const textures = fs.readdirSync(__dirname + '/textures')
 const glslify = require('glslify')
 const regl = require('regl')()
 const h = require('h')
+const normalMatrix = require('gl-mat3/normal-from-mat4');
+const identity = require('gl-mat4/identity');
 
 const camera = require('regl-camera')(regl, {
   distance: 2,
   theta: 1.5,
   phi: 0.4
 })
+
+const model = identity([]);
+const transformModel = regl({
+  uniforms: {
+    model: model,
+    normalMatrix: ctx => normalMatrix([], model)
+  }
+});
 
 var texture, drawMesh
 function init (img) {
@@ -18,25 +28,38 @@ function init (img) {
     vert: `
       precision mediump float;
       attribute vec3 position, normal;
-      uniform mat4 projection, view;
-      varying vec3 n, p;
+      uniform vec3 eye;
+      uniform mat4 projection, view, model;
+      uniform mat3 normalMatrix;
+      varying vec3 n, peye;
       void main () {
-        n = normal;
-        p = position;
-        gl_Position = projection * view * vec4(position, 1);
+        // Transform the normal by the model matrix (which because normals transform
+        // differently means multiplication by the normal matrix):
+        n = normalize(normalMatrix * normal);
+
+        // Transform the position by the model matrix:
+        vec4 mp = model * vec4(position, 1);
+
+        // Compute the direction of the eye relative to the position:
+        peye = normalize(mp.xyz - eye);
+
+        // Transfomr the *directions* of the normal and position-relative-to-eye so
+        // that the matcap stays aligned with the view:
+        n = mat3(view) * n;
+        peye = mat3(view) * peye;
+
+        gl_Position = projection * view * mp;
       }
     `,
     frag: glslify(`
       precision mediump float;
       #pragma glslify: matcap = require('./matcap.glsl')
-      uniform mat4 view;
-      uniform vec3 eye;
-      varying vec3 n, p;
+      varying vec3 n, peye;
       uniform sampler2D texture;
       void main () {
-        vec3 ray = normalize(mat3(view) * (p - eye));
-        vec3 norm = normalize(mat3(view) * n);
-        vec2 uv = matcap(ray, norm);
+        // This could be done in the vertex shader to optimize slightly:
+        vec2 uv = matcap(peye, n);
+
         gl_FragColor = vec4(texture2D(texture, uv).rgb, 1);
       }
     `),
@@ -53,7 +76,11 @@ function init (img) {
 
 regl.frame(() => {
   regl.clear({color: [0, 0, 0, 1], depth: 1})
-  if (drawMesh) camera(drawMesh)
+  if (drawMesh) camera(() => {
+    transformModel(() => {
+      drawMesh()
+    })
+  })
 })
 
 const textureSelect = document.body.appendChild(h('div', {
