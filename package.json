@@ -1,7 +1,7 @@
 {
   "name": "matcap",
   "description": "GLSL shaders for calculating/rendering Spherical Environment Maps, or \"matcaps\"",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "index.js",
   "glslify": "matcap.glsl",
   "dependencies": {
